@@ -32,7 +32,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,11 +49,33 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataContext\DataContext.cs" />
+    <Compile Include="Migrations\201804171807059_CreatedTable.cs" />
+    <Compile Include="Migrations\201804171807059_CreatedTable.Designer.cs">
+      <DependentUpon>201804171807059_CreatedTable.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201804171939516_AddedTeamPlayerandGames.cs" />
+    <Compile Include="Migrations\201804171939516_AddedTeamPlayerandGames.Designer.cs">
+      <DependentUpon>201804171939516_AddedTeamPlayerandGames.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
+    <Compile Include="Models\Games.cs" />
+    <Compile Include="Models\Players.cs" />
+    <Compile Include="Models\Teams.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201804171807059_CreatedTable.resx">
+      <DependentUpon>201804171807059_CreatedTable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804171939516_AddedTeamPlayerandGames.resx">
+      <DependentUpon>201804171939516_AddedTeamPlayerandGames.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
