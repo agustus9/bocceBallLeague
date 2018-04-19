@@ -58,6 +58,10 @@
     <Compile Include="Migrations\201804171939516_AddedTeamPlayerandGames.Designer.cs">
       <DependentUpon>201804171939516_AddedTeamPlayerandGames.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201804192326322_AddedTeamsAndPlayers.cs" />
+    <Compile Include="Migrations\201804192326322_AddedTeamsAndPlayers.Designer.cs">
+      <DependentUpon>201804192326322_AddedTeamsAndPlayers.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Games.cs" />
     <Compile Include="Models\Players.cs" />
@@ -75,6 +79,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201804171939516_AddedTeamPlayerandGames.resx">
       <DependentUpon>201804171939516_AddedTeamPlayerandGames.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201804192326322_AddedTeamsAndPlayers.resx">
+      <DependentUpon>201804192326322_AddedTeamsAndPlayers.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

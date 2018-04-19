@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using bocceBallLeague.Context;
+using bocceBallLeague.DataContext;
 using bocceBallLeague.Models;
+using System.Data.Entity;
 
 namespace bocceBallLeague
 {
@@ -12,107 +13,98 @@ namespace bocceBallLeague
     {
         static void Main(string[] args)
         {
-            var db = new DataContext();
+            using (var db = new bocceBallLeagueDataContext())
 
-
-            var team = new Teams
-            {
-                Mascot = "Bulldog",
-                Color = "White"
-            };
-            db.Teams.Add(team);
-            db.SaveChanges();
-
-            var team2 = new Teams
-            {
-                Mascot = "Eagle",
-                Color = "Black"
-            };
-            db.Teams.Add(team2);
-            db.SaveChanges();
-
-            var team3 = new Teams
-            {
-                Mascot = "Mongoose",
-                Color = "Brown"
-            };
-            db.Teams.Add(team3);
-            db.SaveChanges();
-
-            var team4 = new Teams
-            {
-                Mascot = "Bronco",
-                Color = "Grey"
-            };
-            db.Teams.Add(team4);
-            db.SaveChanges();
-
-
-            var game = new Games
-            {
-                HomeTeam = "Red Team",
-                AwayTeam = "Blue Team",
-                AwayScore = 16,
-                DateHappened = DateTime.Now,
-                Notes = "Away Game"
-            };
-            db.Games.Add(game);
-            db.SaveChanges();
-
-            var game2 = new Games
-            {
-                HomeTeam = "Blue Team",
-                AwayTeam = "Red Team",
-                AwayScore = 10,
-                DateHappened = DateTime.Now,
-                Notes = "Home Game"
-            };
-            db.Games.Add(game2);
-            db.SaveChanges();
-
-            var player = new Players
+            { 
+                db.Players.Add(new Players
             {
                 FullName = "Mike Thompson",
                 NickName = "Rocky",
                 Number = 21,
-                ThrowingArm = "Left Arm",
-            };
-            db.Players.Add(player);
-            db.SaveChanges();
-
-            var player2 = new Players
+                ThrowingArm = "Left Arm"
+             });
+                db.Players.Add(new Players
             {
-                FullName = "Rick Bear",
-                NickName = "Sweet",
-                Number = 11,
-                ThrowingArm = "Right Arm",
-            };
-            db.Players.Add(player2);
-            db.SaveChanges();
+                    FullName = "Rick Bear",
+                    NickName = "Sweet",
+                    Number = 11,
+                    ThrowingArm = "Right Arm",
+             });
+                db.SaveChanges();
+                db.Teams.Add(new Teams
+                {
+                    Mascot = "Bulldog",
+                    Color = "White"
 
-            var player3 = new Players
-            {
-                FullName = "Jeff Tape",
-                NickName = "Sparky",
-                Number = 2,
-                ThrowingArm = "Left Arm",
-            };
-            db.Players.Add(player3);
-            db.SaveChanges();
+                });
+                db.Teams.Add(new Teams
+                {
+                    Mascot = "Eagle",
+                    Color = "Black"
 
-            var player4 = new Players
-            {
-                FullName = "Chris Griffin",
-                NickName = "Slippery",
-                Number = 50,
-                ThrowingArm = "Left Arm",
-            };
-            db.Players.Add(player4);
-            db.SaveChanges();
+                });
+                db.SaveChanges();
+                var bulldog = db.Teams.Include(t => t.Players).First(f => f.Mascot == "Bulldog");
+                var player = db.Players.First(p => p.FullName == "Mike Thompson");
+                bulldog.Players.Add(player);
+
+                var eagle = db.Teams.Include(c => c.Players).First(v => v.Mascot == "Eagle");
+                var player2 = db.Players.First(x => x.FullName == "Rick Bear");
+                eagle.Players.Add(player2);
+                db.SaveChanges();
+
+                db.Games.Add(new Games
+                {
+                    HomeTeam = bulldog,
+                    AwayTeam = eagle,
+                    HomeScore = 14,
+                    AwayScore = 7,
+                    DateHappened = DateTime.Today,
+                    Notes = "go bulldog"
+                });
+                db.Games.Add(new Games
+                {
+                    HomeTeam = bulldog,
+                    AwayTeam = eagle,
+                    DateHappened = DateTime.MaxValue,
+                    Notes = "low score"
+                });
+                db.SaveChanges();
 
 
                 Console.WriteLine("Printing all teams with their records, all players and their current teams, all upcoming games and past games.");
-            Console.Read();
+
+                var scores = db.Teams.Include(s => s.HomeGames).Include(s => s.AwayGames).Where(w => db.Games.Any(l => l.DateHappened < DateTime.Now));
+                foreach (var score in scores)
+                {
+                    int wins = score.HomeGames.Where(g => g.HomeScore > 0 && g.HomeScore > g.AwayScore).Count();
+                    int awayWins = score.AwayGames.Where(g => g.AwayScore > 0 && g.AwayScore > g.HomeScore).Count();
+                    int homeCount = score.HomeGames.Where(g => g.DateHappened < DateTime.Now).Count();
+                    int awayCount = score.AwayGames.Where(g => g.DateHappened < DateTime.Now).Count();
+
+                    Console.WriteLine("Team {0}: {1} wins, {2} loses", score.Mascot, wins + awayWins, homeCount + awayCount - wins - awayWins);
+                }
+                var allPlayers = db.Players.Include(f => f.Team);
+                foreach (var players in allPlayers)
+                {
+                    Console.WriteLine("{0}-{1}", player.FullName, player.Team.Mascot);
+                }
+
+                var allFutureGames = db.Games.Where(g => g.DateHappened > DateTime.Now);
+                foreach (var game in allFutureGames)
+                {
+                    Console.WriteLine("{0}", game.DateHappened);
+                }
+                var allPastGames = db.Games.Where(y => y.DateHappened < DateTime.Now);
+                foreach (var game in allPastGames)
+                {
+                    Console.WriteLine("{0}", game.DateHappened);
+                }
+                db.SaveChanges();
+            }
+            Console.WriteLine("Bulls Win");
+            Console.ReadLine();
         }
     }
 }
+

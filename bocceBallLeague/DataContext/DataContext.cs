@@ -6,11 +6,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace bocceBallLeague.Context
+
+namespace bocceBallLeague.DataContext
 {
-    class DataContext :DbContext
+    class bocceBallLeagueDataContext : DbContext
     {
-        public DataContext() : base("name=DefaultConnection")
+        public bocceBallLeagueDataContext() : base("name=DefaultConnection")
     {
 
     }

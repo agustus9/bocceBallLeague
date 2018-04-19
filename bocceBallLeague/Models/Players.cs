@@ -15,7 +15,7 @@ namespace bocceBallLeague.Models
         public string ThrowingArm { get; set; }
 
         public int? TeamId { get; set; }
-        public Teams Team { get; set; }
+        public virtual Teams Team { get; set; }
 
     }
 }

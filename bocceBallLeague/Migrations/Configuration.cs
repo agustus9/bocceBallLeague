@@ -5,14 +5,14 @@ namespace bocceBallLeague.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<bocceBallLeague.Context.DataContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<bocceBallLeague.DataContext.bocceBallLeagueDataContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(bocceBallLeague.Context.DataContext context)
+        protected override void Seed(bocceBallLeague.DataContext.bocceBallLeagueDataContext context)
         {
             //  This method will be called after migrating to the latest version.
 
